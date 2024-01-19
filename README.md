@@ -49,7 +49,7 @@ Alternatively, clone and run the
 repository to see a minimal Electron app in action:
 
 ```sh
-git clone https://github.com/kimkimhun3/LLC-4000_Congestion_tool.git
+git clone https://github.com/kimkimhun3/LLC-4000-Tool.git
 cd LLC-4000_Congestion_tool
 npm install
 npm start
