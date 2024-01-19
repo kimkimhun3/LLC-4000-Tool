@@ -1,0 +1,45 @@
+{
+  "name": "llc-4000-congestion-tool",
+  "version": "1.0.0",
+  "description": "Congestion Tools",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-win": "electron-packager . LLC-4000 --platform=win32 --icon=./jkj.ico --arch=x64 --out=Final",
+    "build-installer": "makensis installer-script.nsi",
+    "package-and-build-installer": "npm run package-win && npm run build-installer",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "Kim",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "electron-packager": "^17.1.2",
+    "electron-winstaller": "^5.2.1"
+  },
+  "build": {
+    "appId": "llc-4000.congestiontool",
+    "productName": "LLC-4000 Congestion Tool",
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "dmg": {
+      "icon": "jkj.ico"
+    }
+  },
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "chartjs-to-image": "^1.2.2",
+    "excel4node": "^1.8.2",
+    "exceljs": "^4.4.0",
+    "xlsx": "^0.18.5",
+    "xlsx-chart": "github:Tsenzuk/xlsx-chart#master",
+    "xlsx-populate": "^1.21.0"
+  }
+}

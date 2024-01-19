@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <title>LLC-4000 輻輳ログ変換ツール Ver: 01.00</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <textarea hidden id="fileContent" rows="10" cols="30"></textarea>
+    <textarea hidden id="fileContent2" rows="10" cols="30"></textarea>
+    <textarea hidden id="fileContent3" rows="10" cols="30"></textarea>
+    <textarea hidden id="fileContent4" rows="10" cols="30"></textarea>
+    <div id="loadingOverlay">
+      <div class="custom-loader">
+        <!-- Customize your loader structure here -->
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div id="alertOverlay">
+      <div id="alertModal">
+        <div id="alertMessage"></div>
+        <button id="alertCloseBtn">Close</button>
+      </div>
+    </div>
+    <div class="title">LLC-4000 輻輳ログ変換ツール Ver: 01.00</div>
+    <div class="form-style-2">
+      <form onsubmit="submitForm()">
+        <label for="fileInput"><span>入力ログファイル:<span class="required"></span></span><button for="fileInput" onclick="openFile()">選択ボタン</button><div id="uploaded-file-path"></div></label>
+        <label for="portNumber1"><span>輻輳制御UDPポート:  <span class="required"></span></span><input type="number" id="portNumber1" placeholder="1～65535" name="portNumber1" class="input-field"  pattern="[0-9]{1,5}" maxlength="5" value="65000"></label>
+        <span id="portError1" class="error"></span>
+        <label for="portNumber2"><span>輻輳データUDPポート: <span class="required"></span></span><input type="number" id="portNumber2" placeholder="1～65535" name="portNumber2" class="input-field" pattern="[0-9]{1,5}" maxlength="5" value="65001"></label>
+        <span id="portError2" class="error"></span>
+        <label for="fileInput"><span>輻輳制御ログファイル出力: <span class="required"></span></span><button type="button" onclick="openSaveDialog()">選択ボタン1</button><div id="created-file1"></div></label>
+        <label for="fileInput"><span>輻輳データログファイル出力: <span class="required"></span></span><button type="button" onclick="openSaveDialog2()">選択ボタン2</button><div id="created-file2"></div></label>
+        <label for="fileInput"><span>P1 + P2: <span class="required"></span></span><button type="button" onclick="openSaveDialog3()">選択ボタン3</button><div id="created-file3"></div></label>
+        <label for="fileInput"><span>グラフ: <span class="required"></span></span><button type="button" onclick="openSaveDialog4()">選択ボタン4</button><div id="created-file4"></div>        </label>
+        <div class="checkbox-group">
+
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxJT" checked>
+            <label for="checkboxJT">JT</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxJTA" >
+            <label for="checkboxJTA">JT-A</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxJTSDA" >
+            <label for="checkboxJTSDA">JT-SDA</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxRTT" checked >
+            <label for="checkboxRTT">RTT</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxRTTA" >
+            <label for="checkboxRTTA">RTT-A</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxRTTSDA" >
+            <label for="checkboxRTTSDA">RTT-SDA</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxRTTSTRD" >
+            <label for="checkboxRTTSTRD">RTT-STRD</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxRTTLTRD" >
+            <label for="checkboxRTTLTRD">RTT-LTRD</label>
+          </div>
+        
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkboxPLOST" checked >
+            <label for="checkboxPLOST">PLOST</label>
+          </div>
+          <!-- Add checkboxes for other data columns -->
+        </div>
+
+        
+
+        <button type="button" id="downloadBtn" onclick="saveFile()">ダウンロード</button>
+      </form>
+    </div>
+    <script>
+      // Include renderer.js directly in the HTML
+      const script = document.createElement('script');
+      script.src = 'renderer.js';
+      document.body.appendChild(script);
+    </script>
+    <script>
+      const { ipcRenderer } = require('electron');
+      const { shell } = require("electron");
+      const ExcelJS = require('exceljs');
+      const XLSXChart = require("xlsx-chart");
+      const xlsx = require('xlsx');
+      var fs = require("fs");
+
+    </script>
+  </body>
+
+</html>
