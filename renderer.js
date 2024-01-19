@@ -501,7 +501,7 @@ selectedColumns.forEach(title => {
     var dataKey = index + 1;
     if (value !== 0 && value !== "") {
       if (maxValue < value) {
-        maxValue = value + maxValue/30;
+        maxValue = value + maxValue/20;
       }
       datas[title][dataKey] = value;
     }
@@ -523,7 +523,7 @@ nonEmptyArrays.forEach(title => {
     var dataKey = index + 1;
     // console.log(value !== 0 && value !== "")
     if (value !== 0 && value !== "") {
-      datas[title][dataKey] = value === " " ? value : maxValue + maxValue/30
+      datas[title][dataKey] = value === " " ? value : maxValue + maxValue/20
     }
   });
   // Check if there are properties other than 'chart'
