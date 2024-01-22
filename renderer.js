@@ -326,6 +326,16 @@ function handleKeyDown(event) {
 //   });
 //   return eventData;
 // }
+// function parseEventData(dataString) {
+//   const eventData = {};
+//   const keyValuePairs = dataString.split(':').pop().split(',');
+//   keyValuePairs.forEach((pair) => {
+//     const [key, value] = pair.split('=');
+//     eventData[key] = parseInt(value, 10);
+//   });
+//   return eventData;
+// }
+
 
 function parseEventData(dataString) {
   const eventData = {};
@@ -356,7 +366,6 @@ function getSelectedColumns() {
   if (document.getElementById('checkboxRTTSTRD').checked) selectedColumns.push('RTT-STRD');
   if (document.getElementById('checkboxRTTLTRD').checked) selectedColumns.push('RTT-LTRD');
   if (document.getElementById('checkboxPLOST').checked) selectedColumns.push('PLOST');
-
   return selectedColumns;
 }
 function getUncheckedColumns() {
@@ -370,7 +379,6 @@ function getUncheckedColumns() {
   if (!document.getElementById('checkboxRTTSTRD').checked) uncheckedColumns.push('RTT-STRD');
   if (!document.getElementById('checkboxRTTLTRD').checked) uncheckedColumns.push('RTT-LTRD');
   if (!document.getElementById('checkboxPLOST').checked) uncheckedColumns.push('PLOST');
-
   return uncheckedColumns;
 }
 
@@ -451,7 +459,6 @@ function createExcelFile(filePath) {
   const nonEmptyArrays = [];
   // Helper function to check if an array has values other than " ", zero, or empty strings
   const hasNonEmptyValues = (array) => array.some((value) => value !== " " && value !== 0 && value !== "");
-
   // Check each property in filteredEvtData
   Object.entries(filteredEvtData).forEach(([propertyName, array]) => {
     if (hasNonEmptyValues(array)) {
@@ -514,7 +521,7 @@ function createExcelFile(filePath) {
   });
   console.log("dataNames: ",dataNamesArray);
   console.log("Data Data: ",datas);
-  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1 rather than 0
+  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
 
   const ourOpts = {
     charts: [
@@ -766,8 +773,6 @@ function createExcelFile(filePath) {
         chartTitle: 'RTT-LTRD Chart',
         lineWidth: 0.2,
       },
-    
-      
     ],
   };
   xlsxChart.generate(ourOpts, function (err, data) {
