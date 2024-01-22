@@ -1,5 +1,3 @@
-// const { ipcRenderer } = require("electron");
-
 var inputText = "";
 var simpleB;
 let newArr = [];
@@ -252,14 +250,8 @@ function handleConvert() {
     }
   });
 
-  // console.log("allDecoed: ",allDecode);
-
   decodedStringFde8 = decodeFde8.map(hexToAscii);
   decodedStringFde9 = decodeFde9.map(hexToAscii);
-  // console.log("Full Data: ", decodedStringFde9);
-  // for (let i = 0; i < decodedStringFde9.length; i++) {
-  //   newArr.filter(element => !elementsToRemove.includes(element)).map(element => element.replace(/[^a-zA-Z0-9=,:-]/g, ''));
-  // }
   const elementsToRemove = [
     'pLuWgCCcC2BB4D3ECrEB2EB4DcBEB5EC2EBEC5C',
     'ouWgCCCcBcC2B4DScECEBEB4DSEB5ECsEBECC5C'
@@ -278,8 +270,6 @@ function handleConvert() {
     return element.replace(/[^a-zA-Z0-9=,:-]/g, '');
   }).filter(element => element !== undefined);
   // console.log("New Array: ",newArr);
-// New Array include all of fde9, also evt
-
   const decodedAll = allDecode.map(hexToAscii);
   // Assign decoded strings to global variables
   //console.log(typeof decodedStringFde8);
@@ -330,24 +320,22 @@ function handleKeyDown(event) {
 // function parseEventData(dataString) {
 //   const eventData = {};
 //   const keyValuePairs = dataString.split(':').pop().split(',');
-
 //   keyValuePairs.forEach((pair) => {
 //     const [key, value] = pair.split('=');
 //     eventData[key] = parseInt(value, 10);
 //   });
 //   return eventData;
 // }
-
 // function parseEventData(dataString) {
 //   const eventData = {};
 //   const keyValuePairs = dataString.split(':').pop().split(',');
-
 //   keyValuePairs.forEach((pair) => {
 //     const [key, value] = pair.split('=');
 //     eventData[key] = parseInt(value, 10);
 //   });
 //   return eventData;
 // }
+
 
 function parseEventData(dataString) {
   const eventData = {};
@@ -378,7 +366,6 @@ function getSelectedColumns() {
   if (document.getElementById('checkboxRTTSTRD').checked) selectedColumns.push('RTT-STRD');
   if (document.getElementById('checkboxRTTLTRD').checked) selectedColumns.push('RTT-LTRD');
   if (document.getElementById('checkboxPLOST').checked) selectedColumns.push('PLOST');
-
   return selectedColumns;
 }
 function getUncheckedColumns() {
@@ -392,7 +379,6 @@ function getUncheckedColumns() {
   if (!document.getElementById('checkboxRTTSTRD').checked) uncheckedColumns.push('RTT-STRD');
   if (!document.getElementById('checkboxRTTLTRD').checked) uncheckedColumns.push('RTT-LTRD');
   if (!document.getElementById('checkboxPLOST').checked) uncheckedColumns.push('PLOST');
-
   return uncheckedColumns;
 }
 
@@ -473,7 +459,6 @@ function createExcelFile(filePath) {
   const nonEmptyArrays = [];
   // Helper function to check if an array has values other than " ", zero, or empty strings
   const hasNonEmptyValues = (array) => array.some((value) => value !== " " && value !== 0 && value !== "");
-
   // Check each property in filteredEvtData
   Object.entries(filteredEvtData).forEach(([propertyName, array]) => {
     if (hasNonEmptyValues(array)) {
@@ -488,13 +473,7 @@ function createExcelFile(filePath) {
       item && item[columnName] !== undefined ? item[columnName] : null
     );
   });
-  // Object.assign(newArrayData,filteredArr);
-  // console.log("Type of NEW DATA: ", typeof newArrayData);
-  // console.log("NEW DATA: ",newArrayData);
   const selectedAndEvt = selectedColumns.concat(nonEmptyArrays);
-  // console.log("Selected + Evt data: ",selectedAndEvt);
-  // console.log("Selected Column: ",selectedColumns);
-
   // Add column data to the data object
   var datas = {};
   let maxValue = 0
@@ -542,7 +521,7 @@ function createExcelFile(filePath) {
   });
   console.log("dataNames: ",dataNamesArray);
   console.log("Data Data: ",datas);
-  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1 rather than 0
+  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
 
   const ourOpts = {
     charts: [
@@ -794,8 +773,6 @@ function createExcelFile(filePath) {
         chartTitle: 'RTT-LTRD Chart',
         lineWidth: 0.2,
       },
-    
-      
     ],
   };
   xlsxChart.generate(ourOpts, function (err, data) {
