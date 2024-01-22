@@ -409,7 +409,7 @@ function createExcelFile(filePath) {
   // allProperties.forEach((columnName) => {
   //   chartData[columnName] = dataObjects.map((item) => (item && item[columnName] !== undefined ? item[columnName] : null));
   // });
-  // console.log("Chart Data: ",chartData);
+
 
 
   /* Each Graph one by one */
@@ -484,7 +484,7 @@ function createExcelFile(filePath) {
   const selectedAndEvt = selectedColumns.concat(nonEmptyArrays);
   // console.log("Selected + Evt data: ",selectedAndEvt);
   // console.log("Selected Column: ",selectedColumns);
-  //love
+
   // Add column data to the data object
   var datas = {};
   let maxValue = 0
@@ -785,40 +785,6 @@ function createExcelFile(filePath) {
         chartTitle: 'RTT-LTRD Chart',
         lineWidth: 0.2,
       },
-      // {
-      //   position: {
-      //     fromColumn: 1,
-      //     toColumn: 28,
-      //     fromRow: 211,
-      //     toRow: 231
-      //   },
-      //   chart: "line",
-      //   titles: [
-      //     "Price",
-      //     "Number"
-      //   ],
-      //   fields: [
-      //     "Apple",
-      //     "Blackberry",
-      //     "Strawberry",
-      //     "Cowberry"
-      //   ],
-      //   data: {
-      //     "Price": {
-      //       "Apple": 10,
-      //       "Blackberry": 5,
-      //       "Strawberry": 15,
-      //       "Cowberry": 20
-      //     },
-      //     "Number": {
-      //       "Apple": 5,
-      //       "Blackberry": 2,
-      //       "Strawberry": 9,
-      //       "Cowberry": 3
-      //     }
-      //   },
-      //   chartTitle: "Scatter chart"
-      // }
     
       
     ],
