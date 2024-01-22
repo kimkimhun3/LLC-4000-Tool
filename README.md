@@ -54,12 +54,25 @@ cd LLC-4000_Congestion_tool
 npm install
 npm start
 ```
+- **Note point**
 
 
 ## Release History
 
 - 0.1
-
+```sh
+F: Few, M:Many
+evt1to PLOST-F
+evt2 to JT-F
+evt4 to RTT-SDA-F
+evt8 to RTT-STRD-F
+evt10 to RTT-LTRD-F
+evt20 to PLOST-M
+evt40 to JT-M
+evt80 to RTT-SDA-M
+evt100 to RTT-STRD-M
+evt200 to RTT-LTRD-M
+```
 
 
 
