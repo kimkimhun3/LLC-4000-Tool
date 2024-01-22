@@ -335,7 +335,17 @@ function handleKeyDown(event) {
 //     const [key, value] = pair.split('=');
 //     eventData[key] = parseInt(value, 10);
 //   });
+//   return eventData;
+// }
 
+// function parseEventData(dataString) {
+//   const eventData = {};
+//   const keyValuePairs = dataString.split(':').pop().split(',');
+
+//   keyValuePairs.forEach((pair) => {
+//     const [key, value] = pair.split('=');
+//     eventData[key] = parseInt(value, 10);
+//   });
 //   return eventData;
 // }
 
@@ -404,7 +414,7 @@ function createExcelFile(filePath) {
   // Extract all unique property names from all data points
   //const allProperties = Array.from(new Set(dataObjects.flatMap((item) => Object.keys(item))));
 
-  // Prepare data for xlsx-chart for all data
+
   // const chartData = {};
   // allProperties.forEach((columnName) => {
   //   chartData[columnName] = dataObjects.map((item) => (item && item[columnName] !== undefined ? item[columnName] : null));
@@ -534,7 +544,6 @@ function createExcelFile(filePath) {
   console.log("Data Data: ",datas);
   const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1 rather than 0
 
-  // console.log("Field Dataset: ,",fieldDataset);
   const ourOpts = {
     charts: [
       {
@@ -724,7 +733,7 @@ function createExcelFile(filePath) {
         },
         chart: 'column',
         titles: ['RTT'],
-        fields: fieldDataset, // Use allProperties for fields
+        fields: fieldDataset,
         data: rttChartData,
         chartTitle: 'RTT Chart',
         lineWidth: 0.2,
