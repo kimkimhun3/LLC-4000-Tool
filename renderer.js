@@ -1,5 +1,3 @@
-// const { ipcRenderer } = require("electron");
-
 var inputText = "";
 var simpleB;
 let newArr = [];
@@ -252,14 +250,8 @@ function handleConvert() {
     }
   });
 
-  // console.log("allDecoed: ",allDecode);
-
   decodedStringFde8 = decodeFde8.map(hexToAscii);
   decodedStringFde9 = decodeFde9.map(hexToAscii);
-  // console.log("Full Data: ", decodedStringFde9);
-  // for (let i = 0; i < decodedStringFde9.length; i++) {
-  //   newArr.filter(element => !elementsToRemove.includes(element)).map(element => element.replace(/[^a-zA-Z0-9=,:-]/g, ''));
-  // }
   const elementsToRemove = [
     'pLuWgCCcC2BB4D3ECrEB2EB4DcBEB5EC2EBEC5C',
     'ouWgCCCcBcC2B4DScECEBEB4DSEB5ECsEBECC5C'
@@ -278,8 +270,6 @@ function handleConvert() {
     return element.replace(/[^a-zA-Z0-9=,:-]/g, '');
   }).filter(element => element !== undefined);
   // console.log("New Array: ",newArr);
-// New Array include all of fde9, also evt
-
   const decodedAll = allDecode.map(hexToAscii);
   // Assign decoded strings to global variables
   //console.log(typeof decodedStringFde8);
@@ -330,18 +320,6 @@ function handleKeyDown(event) {
 // function parseEventData(dataString) {
 //   const eventData = {};
 //   const keyValuePairs = dataString.split(':').pop().split(',');
-
-//   keyValuePairs.forEach((pair) => {
-//     const [key, value] = pair.split('=');
-//     eventData[key] = parseInt(value, 10);
-//   });
-//   return eventData;
-// }
-
-// function parseEventData(dataString) {
-//   const eventData = {};
-//   const keyValuePairs = dataString.split(':').pop().split(',');
-
 //   keyValuePairs.forEach((pair) => {
 //     const [key, value] = pair.split('=');
 //     eventData[key] = parseInt(value, 10);
@@ -488,13 +466,7 @@ function createExcelFile(filePath) {
       item && item[columnName] !== undefined ? item[columnName] : null
     );
   });
-  // Object.assign(newArrayData,filteredArr);
-  // console.log("Type of NEW DATA: ", typeof newArrayData);
-  // console.log("NEW DATA: ",newArrayData);
   const selectedAndEvt = selectedColumns.concat(nonEmptyArrays);
-  // console.log("Selected + Evt data: ",selectedAndEvt);
-  // console.log("Selected Column: ",selectedColumns);
-
   // Add column data to the data object
   var datas = {};
   let maxValue = 0
