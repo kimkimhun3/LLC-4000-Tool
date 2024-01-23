@@ -62,7 +62,7 @@ npm start
 - 0.1
 ```sh
 F: Few, M:Many
-evt1to PLOST-F
+evt1 to PLOST-F
 evt2 to JT-F
 evt4 to RTT-SDA-F
 evt8 to RTT-STRD-F
