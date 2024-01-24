@@ -443,15 +443,16 @@ function createExcelFile(filePath) {
   //   evt: dataObjects.map((item) => (item && item['evt'] !== undefined ? (item['evt'] === 0 ? " " : item['evt']) : null)),
   // };
 
+  //New function
   const filteredEvtData = {
+    "PLOST-M": dataObjects.map((item) => (item && item['evt'] === 20 ? item['evt'] : " ")),
     "PLOST-F": dataObjects.map((item) => (item && item['evt'] === 1 ? item['evt'] : " ")),
     "JT-F": dataObjects.map((item) => (item && item['evt'] === 2 ? item['evt'] : " ")),
-    "RTT-SDA-F": dataObjects.map((item) => (item && item['evt'] === 4 ? item['evt'] : " ")),
+    "RTT-F": dataObjects.map((item) => (item && item['evt'] === 4 ? item['evt'] : " ")),
     "RTT-STRD-F": dataObjects.map((item) => (item && item['evt'] === 8 ? item['evt'] : " ")),
     "RTT-LTRD-F": dataObjects.map((item) => (item && item['evt'] === 10 ? item['evt'] : " ")),
-    "PLOST-M": dataObjects.map((item) => (item && item['evt'] === 20 ? item['evt'] : " ")),
     "JT-M": dataObjects.map((item) => (item && item['evt'] === 40 ? item['evt'] : " ")),
-    "RTT-SDA-M": dataObjects.map((item) => (item && item['evt'] === 80 ? item['evt'] : " ")),
+    "RTT-M": dataObjects.map((item) => (item && item['evt'] === 80 ? item['evt'] : " ")),
     "RTT-STRD-M": dataObjects.map((item) => (item && item['evt'] === 100 ? item['evt'] : " ")),
     "RTT-LTRD-M": dataObjects.map((item) => (item && item['evt'] === 200 ? item['evt'] : " ")),
   };
@@ -465,15 +466,35 @@ function createExcelFile(filePath) {
       nonEmptyArrays.push(propertyName);
     }
   });
+  console.log("All Event: ",nonEmptyArrays);
+
   const xlsxChart = new XLSXChart();
   const selectedColumns = getSelectedColumns();
+  // Filter elements based on prefixes
+  const hasColumn = (prefix) => selectedColumns.includes(prefix);
+
+  // Your existing array filtering based on conditions
+  const filteredNonEmptyArrays = nonEmptyArrays.filter((elem) => {
+    // Check for JT-A, JT-SDA, RTT-A, RTT-SDA and skip conditions if they exist
+    // if (hasColumn("JT-A") || hasColumn("JT-SDA") || hasColumn("RTT-A") || hasColumn("RTT-SDA")) {
+    //   return false;
+    // }
+    
+    const prefix = elem.replace(/-(F|M)$/, ''); // Remove the suffix to match with selectedColumns
+    return hasColumn(prefix) && (elem.endsWith("-F") || elem.endsWith("-M"));
+  });
   const newArrayData = {};
   selectedColumns.forEach((columnName) => {
     newArrayData[columnName] = dataObjects.map((item) =>
       item && item[columnName] !== undefined ? item[columnName] : null
     );
   });
-  const selectedAndEvt = selectedColumns.concat(nonEmptyArrays);
+  console.log("Select column: ",selectedColumns);
+
+  //maybe check here.
+  const selectedAndEvt = selectedColumns.concat(filteredNonEmptyArrays);
+  console.log("selected and Event: ",selectedAndEvt);
+  console.log("Final Event: ",filteredNonEmptyArrays);
   // Add column data to the data object
   var datas = {};
   let maxValue = 0
@@ -500,7 +521,7 @@ function createExcelFile(filePath) {
     }
   });
 
-  nonEmptyArrays.forEach(title => {
+  filteredNonEmptyArrays.forEach(title => {
     datas[title] = {
       "chart": "line",
     };
@@ -591,8 +612,8 @@ function createExcelFile(filePath) {
               "JT-M": {
                 "JT-M": 'ffffff'
               },
-              "RTT-SDA-M": {
-                "RTT-SDA-M": 'ffffff'
+              "RTT-M": {
+                "RTT-M": 'ffffff'
               },
               "RTT-STRD-M": {
                 "RTT-STRD-M": 'ffffff'
@@ -642,7 +663,7 @@ function createExcelFile(filePath) {
                 fill: 'ffffff',
                 line: 'ffffff'
               },
-              "RTT-SDA-M": {
+              "RTT-M": {
                 fill: 'ffffff',
                 line: 'ffffff'
               },
