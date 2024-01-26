@@ -391,6 +391,8 @@ function createExcelFile(filePath) {
     console.error('Data objects are undefined or have length 0.');
     return;
   }
+
+  console.log("Data object: ",dataObjects);
   // console.log("Data Object: ",dataObjects);
   //const evtValues = dataObjects.map((data) => data.evt);
   // const evtValues = dataObjects.map((data) => (data.evt === 0 ? "" : data.evt));
@@ -436,12 +438,16 @@ function createExcelFile(filePath) {
   const plostChartData = {
     PLOST: dataObjects.map((item) => (item && item['PLOST'] !== undefined ? item['PLOST'] : null)),
   }
+  const isAllPLOSTZero = plostChartData.PLOST.every(value => value === 0);
+  const isAllnowBRZero = nowBitrateChartData
+  console.log("PLOST chart data: ", plostChartData);
   // const evtChartData = {
   //   evt: dataObjects.map((item) => (item && item['evt'] !== undefined ? item['evt'] : null)),
   // }
   // const evtChartData = {
   //   evt: dataObjects.map((item) => (item && item['evt'] !== undefined ? (item['evt'] === 0 ? " " : item['evt']) : null)),
   // };
+
 
   //New function
   const filteredEvtData = {
@@ -479,20 +485,43 @@ function createExcelFile(filePath) {
     // if (hasColumn("JT-A") || hasColumn("JT-SDA") || hasColumn("RTT-A") || hasColumn("RTT-SDA")) {
     //   return false;
     // }
-    
     const prefix = elem.replace(/-(F|M)$/, ''); // Remove the suffix to match with selectedColumns
     return hasColumn(prefix) && (elem.endsWith("-F") || elem.endsWith("-M"));
   });
+  //The starting point
+  // const newArrayData = {};
+  // selectedColumns.forEach((columnName) => {
+  //   newArrayData[columnName] = dataObjects.map((item) =>
+  //     item && item[columnName] !== undefined ? item[columnName] : null
+  //   );
+  // });
+
   const newArrayData = {};
   selectedColumns.forEach((columnName) => {
-    newArrayData[columnName] = dataObjects.map((item) =>
+    const arrayValues = dataObjects.map((item) =>
       item && item[columnName] !== undefined ? item[columnName] : null
     );
+    // Check if the array name starts with "JT"
+    if (columnName.startsWith("JT")) {
+      newArrayData[columnName] = arrayValues.map((value) => value / 1000);
+    } else {
+      newArrayData[columnName] = arrayValues;
+    }
   });
-  console.log("Select column: ",selectedColumns);
+
+
+  console.log("New array Data: ",newArrayData);
+
 
   //maybe check here.
-  const selectedAndEvt = selectedColumns.concat(filteredNonEmptyArrays);
+  const selectedAndEvt = selectedColumns.concat(filteredNonEmptyArrays, "NOW-BR","MAX-BR");
+  if (isAllPLOSTZero) {
+    const indexToRemove = selectedAndEvt.indexOf("PLOST");
+    if (indexToRemove !== -1) {
+      selectedAndEvt.splice(indexToRemove, 1);
+    }
+  }
+  
   console.log("selected and Event: ",selectedAndEvt);
   console.log("Final Event: ",filteredNonEmptyArrays);
   // Add column data to the data object
@@ -513,14 +542,17 @@ function createExcelFile(filePath) {
       }
     });
     // Check if there are properties other than 'chart'
-    if (Object.keys(datas[title]).length > 1) {
+    const hasNonChartProperties = Object.values(datas[title]).some(val => val !== "chart");
+    if (hasNonChartProperties) {
       dataNamesArray.push(title);
     } else {
-      // If no properties, remove the empty object
-      delete datas[title];
+      // If no properties other than 'chart', remove the object if all values are 0
+      const allValuesAreZero = Object.values(datas[title]).every(val => val === 0);
+      if (!allValuesAreZero) {
+        delete datas[title];
+      }
     }
   });
-
   filteredNonEmptyArrays.forEach(title => {
     datas[title] = {
       "chart": "line",
@@ -540,10 +572,164 @@ function createExcelFile(filePath) {
       delete datas[title];
     }
   });
+  console.log("filteredNonEmptyArrays ",filteredNonEmptyArrays);
+  console.log("Selected Column: ",selectedColumns);
   console.log("dataNames: ",dataNamesArray);
   console.log("Data Data: ",datas);
-  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
+  console.log("Max Value: ",maxValue);
 
+  // const nowBitrateChartData = {
+  //   'NOW-BR': {
+  //     "chart": "line",
+  //     ...dataObjects.reduce((acc, item, index) => {
+  //       acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
+  //       return acc;
+  //     }, {}),
+  //   },
+  // };
+  // const maxBitrateChartData = {
+  //   'MAX-BR': {
+  //     "chart": "column",
+  //     ...(() => {
+  //       const lastIndex = dataObjects.length - 1;
+        
+  //       // Initialize all values to 0
+  //       const result = Object.fromEntries(dataObjects.map((_, index) => [index + 1, 0]));
+  
+  //       // Set the value at the last index
+  //       if (lastIndex >= 0) {
+  //         const lastValue = dataObjects[lastIndex] && dataObjects[lastIndex]['MAX-BR'] !== undefined ? dataObjects[lastIndex]['MAX-BR'] : null;
+  //         result[lastIndex + 1] = lastValue;
+  //       }
+  //       return result;
+  //     })(),
+  //   },
+  // };
+  const scaleObject = (inputObject) => {
+    const maxObjectValue = Math.max(...Object.values(inputObject));
+    const scalingFactor = maxValue / maxObjectValue;
+  
+    const scaledObject = {};
+    Object.keys(inputObject).forEach((key) => {
+      scaledObject[key] = inputObject[key] * scalingFactor;
+    });
+  
+    return scaledObject;
+  };
+  
+  // Your existing chart data with scaling applied
+  const nowBitrateChartData = {
+    'NOW-BR': {
+      chart: "line",
+      ...scaleObject(
+        dataObjects.reduce((acc, item, index) => {
+          acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
+          return acc;
+        }, {})
+      ),
+    },
+  };
+  
+  const maxBitrateChartData = {
+    'MAX-BR': {
+      chart: "column",
+      ...(() => {
+        const lastIndex = dataObjects.length - 1;
+  
+        // Initialize all values to 0
+        const result = Object.fromEntries(dataObjects.map((_, index) => [index + 1, 0]));
+  
+        // Set the value at the last index
+        if (lastIndex >= 0) {
+          const lastValue =
+            dataObjects[lastIndex] && dataObjects[lastIndex]['MAX-BR'] !== undefined
+              ? dataObjects[lastIndex]['MAX-BR']
+              : null;
+          result[lastIndex + 1] = lastValue;
+        }
+  
+        return scaleObject(result);
+      })(),
+    },
+  };
+  
+
+
+
+
+
+
+
+  // Merge nowBitrateChartData into datas
+  Object.assign(datas, nowBitrateChartData, maxBitrateChartData);
+
+  // Check for NOW-BR properties
+  if (Object.keys(datas['NOW-BR']).length > 1) {
+    dataNamesArray.push('NOW-BR');
+  } else {
+    // If no properties, remove the empty object
+    delete datas['NOW-BR'];
+  }
+  
+  // Check for MAX-BR properties
+  if (Object.keys(datas['MAX-BR']).length > 1) {
+    dataNamesArray.push('MAX-BR');
+  } else {
+    // If no properties, remove the empty object
+    delete datas['MAX-BR'];
+  }
+
+console.log("MAX-BR: ",maxBitrateChartData);
+console.log("Updated datas object: ", datas);
+
+let bitrateDatas = {};
+const nowBitrateChartData1 = {
+    'NOW-BR': {
+      "chart": "line",
+      ...dataObjects.reduce((acc, item, index) => {
+        acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
+        return acc;
+      }, {}),
+    },
+  };
+const maxBitrateChartData1 = {
+  'MAX-BR': {
+    "chart": "column",
+    ...(() => {
+      const lastIndex = dataObjects.length - 1;
+      
+      // Initialize all values to 0
+      const result = Object.fromEntries(dataObjects.map((_, index) => [index + 1, 0]));
+
+      // Set the value at the last index
+      if (lastIndex >= 0) {
+        const lastValue = dataObjects[lastIndex] && dataObjects[lastIndex]['MAX-BR'] !== undefined ? dataObjects[lastIndex]['MAX-BR'] : null;
+        result[lastIndex + 1] = lastValue;
+      }
+      return result;
+    })(),
+  },
+};
+Object.assign(bitrateDatas,nowBitrateChartData1,maxBitrateChartData1);
+  // Check for NOW-BR properties
+  if (Object.keys(bitrateDatas['NOW-BR']).length > 1) {
+    dataNamesArray.push('NOW-BR');
+  } else {
+    // If no properties, remove the empty object
+    delete bitrateDatas['NOW-BR'];
+  }
+  
+  // Check for MAX-BR properties
+  if (Object.keys(bitrateDatas['MAX-BR']).length > 1) {
+    dataNamesArray.push('MAX-BR');
+  } else {
+    // If no properties, remove the empty object
+    delete bitrateDatas['MAX-BR'];
+  }
+
+
+
+  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
   const ourOpts = {
     charts: [
       {
@@ -620,6 +806,12 @@ function createExcelFile(filePath) {
               },
               "RTT-LTRD-M": {
                 "RTT-LTRD-M": 'ffffff'
+              },
+              "NOW-BR":{
+                "NOW-BR": 'ff0000'
+              },
+              "MAX-BR": {
+                "MAX-BR": '000000'
               }
           },
           series: {
@@ -674,6 +866,14 @@ function createExcelFile(filePath) {
               "RTT-LTRD-M": {
                 fill: 'ffffff',
                 line: 'ffffff'
+              },
+              "NOW-BR": {
+                fill: 'ff0000',
+                line: 'ff0000'
+              },
+              "MAX-BR": {
+                fill: '000000',
+                line: '000000'
               }
             }
         },
@@ -792,6 +992,19 @@ function createExcelFile(filePath) {
         fields: fieldDataset,
         data: rttLTRDChartData,
         chartTitle: 'RTT-LTRD Chart',
+        lineWidth: 0.2,
+      },
+      {        
+        position: {
+        fromColumn: 1,
+        toColumn: 28,
+        fromRow: 211,
+        toRow: 231,
+      },
+        titles: ['NOW-BR','MAX-BR'],
+        fields: fieldDataset,
+        data: bitrateDatas,
+        chartTitle: 'Bitrate Chart',
         lineWidth: 0.2,
       },
     ],
