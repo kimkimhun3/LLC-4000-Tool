@@ -1,5 +1,4 @@
 var inputText = "";
-var simpleB;
 let newArr = [];
 let decodedStringFde9 = [];
 let decodedStringFde8 = []; 
@@ -12,9 +11,6 @@ function hexToAscii(hex) {
   return asciiString;
 }
 
-let selectedDirectory;
-let fileContent = "";
-function submitForm() {}
 
 function openFile() {
   ipcRenderer.send("open-file-dialog");
@@ -269,7 +265,7 @@ function handleConvert() {
   
     return element.replace(/[^a-zA-Z0-9=,:-]/g, '');
   }).filter(element => element !== undefined);
-  // console.log("New Array: ",newArr);
+  console.log("New Array: ",newArr);
   const decodedAll = allDecode.map(hexToAscii);
   // Assign decoded strings to global variables
   //console.log(typeof decodedStringFde8);
@@ -290,32 +286,23 @@ function handleConvert() {
   fileContent3.value = window.decodedAll;
   // fileContent4.value = window.excelData;
 }
+
 function showAlert(message) {
   const alertOverlay = document.getElementById("alertOverlay");
   const alertMessage = document.getElementById("alertMessage");
   const alertCloseBtn = document.getElementById("alertCloseBtn");
-
   alertMessage.innerHTML = message.replace("\n", "<br>");
   alertOverlay.style.display = "flex";
   alertCloseBtn.addEventListener("click", () => {
     alertOverlay.style.display = 'none';
     closeAlert();
   });
-  // Close the alert when the user presses Enter, Space, or Esc
-  document.addEventListener("keydown", handleKeyDown);
 }
 function closeAlert() {
   const alertOverlay = document.getElementById("alertOverlay");
   alertOverlay.style.display = "none";
-  // Remove the event listener to avoid potential memory leaks
-  document.removeEventListener("keydown", handleKeyDown);
 }
-function handleKeyDown(event) {
-  // Check if the pressed key is Enter (key code 13), Space (key code 32), or Esc (key code 27)
-  if (event.keyCode === 13 || event.keyCode === 32 || event.keyCode === 27) {
-    closeAlert();
-  }
-}
+
 
 // function parseEventData(dataString) {
 //   const eventData = {};
@@ -353,34 +340,21 @@ function parseEventData(dataString) {
   return eventData;
 }
 
-
-
 function getSelectedColumns() {
   const selectedColumns = [];
-  if (document.getElementById('checkboxJT').checked) selectedColumns.push('JT');
-  if (document.getElementById('checkboxJTA').checked) selectedColumns.push('JT-A');
-  if (document.getElementById('checkboxJTSDA').checked) selectedColumns.push('JT-SDA');
   if (document.getElementById('checkboxRTT').checked) selectedColumns.push('RTT');
   if (document.getElementById('checkboxRTTA').checked) selectedColumns.push('RTT-A');
+  if (document.getElementById('checkboxPLOST').checked) selectedColumns.push('PLOST');
   if (document.getElementById('checkboxRTTSDA').checked) selectedColumns.push('RTT-SDA');
   if (document.getElementById('checkboxRTTSTRD').checked) selectedColumns.push('RTT-STRD');
   if (document.getElementById('checkboxRTTLTRD').checked) selectedColumns.push('RTT-LTRD');
-  if (document.getElementById('checkboxPLOST').checked) selectedColumns.push('PLOST');
+  if (document.getElementById('checkboxJT').checked) selectedColumns.push('JT');
+  if (document.getElementById('checkboxJTA').checked) selectedColumns.push('JT-A');
+  if (document.getElementById('checkboxJTSDA').checked) selectedColumns.push('JT-SDA');
+
   return selectedColumns;
 }
-function getUncheckedColumns() {
-  const uncheckedColumns = [];
-  if (!document.getElementById('checkboxJT').checked) uncheckedColumns.push('JT');
-  if (!document.getElementById('checkboxJTA').checked) uncheckedColumns.push('JT-A');
-  if (!document.getElementById('checkboxJTSDA').checked) uncheckedColumns.push('JT-SDA');
-  if (!document.getElementById('checkboxRTT').checked) uncheckedColumns.push('RTT');
-  if (!document.getElementById('checkboxRTTA').checked) uncheckedColumns.push('RTT-A');
-  if (!document.getElementById('checkboxRTTSDA').checked) uncheckedColumns.push('RTT-SDA');
-  if (!document.getElementById('checkboxRTTSTRD').checked) uncheckedColumns.push('RTT-STRD');
-  if (!document.getElementById('checkboxRTTLTRD').checked) uncheckedColumns.push('RTT-LTRD');
-  if (!document.getElementById('checkboxPLOST').checked) uncheckedColumns.push('PLOST');
-  return uncheckedColumns;
-}
+
 
 function createExcelFile(filePath) {
   // Assuming newArr is your array of data
@@ -411,9 +385,7 @@ function createExcelFile(filePath) {
 
 
   /* Each Graph one by one */
-  const jtChartData = {
-    JT: dataObjects.map((item) => (item && item['JT'] !== undefined ? item['JT'] : null)),
-  }
+
   const jtAChartData = {
     'JT-A': dataObjects.map((item) => (item && item['JT-A'] !== undefined ? item['JT-A'] : null)),
   };
@@ -438,8 +410,10 @@ function createExcelFile(filePath) {
   const plostChartData = {
     PLOST: dataObjects.map((item) => (item && item['PLOST'] !== undefined ? item['PLOST'] : null)),
   }
+  const jtChartData = {
+    JT: dataObjects.map((item) => (item && item['JT'] !== undefined ? item['JT'] : null)),
+  }
   const isAllPLOSTZero = plostChartData.PLOST.every(value => value === 0);
-  const isAllnowBRZero = nowBitrateChartData
   console.log("PLOST chart data: ", plostChartData);
   // const evtChartData = {
   //   evt: dataObjects.map((item) => (item && item['evt'] !== undefined ? item['evt'] : null)),
@@ -451,16 +425,16 @@ function createExcelFile(filePath) {
 
   //New function
   const filteredEvtData = {
-    "PLOST-M": dataObjects.map((item) => (item && item['evt'] === 20 ? item['evt'] : " ")),
-    "PLOST-F": dataObjects.map((item) => (item && item['evt'] === 1 ? item['evt'] : " ")),
-    "JT-F": dataObjects.map((item) => (item && item['evt'] === 2 ? item['evt'] : " ")),
-    "RTT-F": dataObjects.map((item) => (item && item['evt'] === 4 ? item['evt'] : " ")),
-    "RTT-STRD-F": dataObjects.map((item) => (item && item['evt'] === 8 ? item['evt'] : " ")),
-    "RTT-LTRD-F": dataObjects.map((item) => (item && item['evt'] === 10 ? item['evt'] : " ")),
-    "JT-M": dataObjects.map((item) => (item && item['evt'] === 40 ? item['evt'] : " ")),
-    "RTT-M": dataObjects.map((item) => (item && item['evt'] === 80 ? item['evt'] : " ")),
-    "RTT-STRD-M": dataObjects.map((item) => (item && item['evt'] === 100 ? item['evt'] : " ")),
-    "RTT-LTRD-M": dataObjects.map((item) => (item && item['evt'] === 200 ? item['evt'] : " ")),
+    "PLOST-M": dataObjects.map((item) => (item && item['evt'] === 20 ? item['evt'] : 0)),
+    "PLOST-F": dataObjects.map((item) => (item && item['evt'] === 1 ? item['evt'] : 0)),
+    "JT-F": dataObjects.map((item) => (item && item['evt'] === 2 ? item['evt'] : 0)),
+    "RTT-F": dataObjects.map((item) => (item && item['evt'] === 4 ? item['evt'] : 0)),
+    "RTT-STRD-F": dataObjects.map((item) => (item && item['evt'] === 8 ? item['evt'] : 0)),
+    "RTT-LTRD-F": dataObjects.map((item) => (item && item['evt'] === 10 ? item['evt'] : 0)),
+    "JT-M": dataObjects.map((item) => (item && item['evt'] === 40 ? item['evt'] : 0)),
+    "RTT-M": dataObjects.map((item) => (item && item['evt'] === 80 ? item['evt'] : 0)),
+    "RTT-STRD-M": dataObjects.map((item) => (item && item['evt'] === 100 ? item['evt'] : 0)),
+    "RTT-LTRD-M": dataObjects.map((item) => (item && item['evt'] === 200 ? item['evt'] : 0)),
   };
   console.log("FilteredEvt Data: ",filteredEvtData);  
   const nonEmptyArrays = [];
@@ -481,20 +455,9 @@ function createExcelFile(filePath) {
 
   // Your existing array filtering based on conditions
   const filteredNonEmptyArrays = nonEmptyArrays.filter((elem) => {
-    // Check for JT-A, JT-SDA, RTT-A, RTT-SDA and skip conditions if they exist
-    // if (hasColumn("JT-A") || hasColumn("JT-SDA") || hasColumn("RTT-A") || hasColumn("RTT-SDA")) {
-    //   return false;
-    // }
     const prefix = elem.replace(/-(F|M)$/, ''); // Remove the suffix to match with selectedColumns
     return hasColumn(prefix) && (elem.endsWith("-F") || elem.endsWith("-M"));
   });
-  //The starting point
-  // const newArrayData = {};
-  // selectedColumns.forEach((columnName) => {
-  //   newArrayData[columnName] = dataObjects.map((item) =>
-  //     item && item[columnName] !== undefined ? item[columnName] : null
-  //   );
-  // });
 
   const newArrayData = {};
   selectedColumns.forEach((columnName) => {
@@ -509,12 +472,8 @@ function createExcelFile(filePath) {
     }
   });
 
-
-  console.log("New array Data: ",newArrayData);
-
-
   //maybe check here.
-  const selectedAndEvt = selectedColumns.concat(filteredNonEmptyArrays, "NOW-BR","MAX-BR");
+  const selectedAndEvt = selectedColumns.concat(filteredNonEmptyArrays, "NOW-BR");
   if (isAllPLOSTZero) {
     const indexToRemove = selectedAndEvt.indexOf("PLOST");
     if (indexToRemove !== -1) {
@@ -522,8 +481,8 @@ function createExcelFile(filePath) {
     }
   }
   
-  console.log("selected and Event: ",selectedAndEvt);
-  console.log("Final Event: ",filteredNonEmptyArrays);
+  // console.log("selected and Event: ",selectedAndEvt);
+  // console.log("Final Event: ",filteredNonEmptyArrays);
   // Add column data to the data object
   var datas = {};
   let maxValue = 0
@@ -555,7 +514,7 @@ function createExcelFile(filePath) {
   });
   filteredNonEmptyArrays.forEach(title => {
     datas[title] = {
-      "chart": "line",
+      "chart": "scatter",
     };
     filteredEvtData[title].forEach((value, index) => {
       var dataKey = index + 1;
@@ -572,21 +531,21 @@ function createExcelFile(filePath) {
       delete datas[title];
     }
   });
-  console.log("filteredNonEmptyArrays ",filteredNonEmptyArrays);
-  console.log("Selected Column: ",selectedColumns);
-  console.log("dataNames: ",dataNamesArray);
-  console.log("Data Data: ",datas);
-  console.log("Max Value: ",maxValue);
+  // console.log("filteredNonEmptyArrays ",filteredNonEmptyArrays);
+  // console.log("Selected Column: ",selectedColumns);
+  // console.log("dataNames: ",dataNamesArray);
+  // console.log("Data Data: ",datas);
+  // console.log("Max Value: ",maxValue);
 
-  // const nowBitrateChartData = {
-  //   'NOW-BR': {
-  //     "chart": "line",
-  //     ...dataObjects.reduce((acc, item, index) => {
-  //       acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
-  //       return acc;
-  //     }, {}),
-  //   },
-  // };
+  const nowBitrateChartData = {
+    'NOW-BR': {
+      "chart": "scatter",
+      ...dataObjects.reduce((acc, item, index) => {
+        acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
+        return acc;
+      }, {}),
+    },
+  };
   // const maxBitrateChartData = {
   //   'MAX-BR': {
   //     "chart": "column",
@@ -605,64 +564,55 @@ function createExcelFile(filePath) {
   //     })(),
   //   },
   // };
-  const scaleObject = (inputObject) => {
-    const maxObjectValue = Math.max(...Object.values(inputObject));
-    const scalingFactor = maxValue / maxObjectValue;
+  // const scaleObject = (inputObject) => {
+  //   const maxObjectValue = Math.max(...Object.values(inputObject));
+  //   const scalingFactor = maxValue / maxObjectValue;
   
-    const scaledObject = {};
-    Object.keys(inputObject).forEach((key) => {
-      scaledObject[key] = inputObject[key] * scalingFactor;
-    });
+  //   const scaledObject = {};
+  //   Object.keys(inputObject).forEach((key) => {
+  //     scaledObject[key] = inputObject[key] * scalingFactor;
+  //   });
   
-    return scaledObject;
-  };
+  //   return scaledObject;
+  // };
   
   // Your existing chart data with scaling applied
-  const nowBitrateChartData = {
-    'NOW-BR': {
-      chart: "line",
-      ...scaleObject(
-        dataObjects.reduce((acc, item, index) => {
-          acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
-          return acc;
-        }, {})
-      ),
-    },
-  };
+  // const nowBitrateChartData = {
+  //   'NOW-BR': {
+  //     chart: "line",
+  //     ...scaleObject(
+  //       dataObjects.reduce((acc, item, index) => {
+  //         acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
+  //         return acc;
+  //       }, {})
+  //     ),
+  //   },
+  // };
   
-  const maxBitrateChartData = {
-    'MAX-BR': {
-      chart: "column",
-      ...(() => {
-        const lastIndex = dataObjects.length - 1;
+  // const maxBitrateChartData = {
+  //   'MAX-BR': {
+  //     chart: "column",
+  //     ...(() => {
+  //       const lastIndex = dataObjects.length - 1;
   
-        // Initialize all values to 0
-        const result = Object.fromEntries(dataObjects.map((_, index) => [index + 1, 0]));
+  //       // Initialize all values to 0
+  //       const result = Object.fromEntries(dataObjects.map((_, index) => [index + 1, 0]));
   
-        // Set the value at the last index
-        if (lastIndex >= 0) {
-          const lastValue =
-            dataObjects[lastIndex] && dataObjects[lastIndex]['MAX-BR'] !== undefined
-              ? dataObjects[lastIndex]['MAX-BR']
-              : null;
-          result[lastIndex + 1] = lastValue;
-        }
+  //       // Set the value at the last index
+  //       if (lastIndex >= 0) {
+  //         const lastValue =
+  //           dataObjects[lastIndex] && dataObjects[lastIndex]['MAX-BR'] !== undefined
+  //             ? dataObjects[lastIndex]['MAX-BR']
+  //             : null;
+  //         result[lastIndex + 1] = lastValue;
+  //       }
   
-        return scaleObject(result);
-      })(),
-    },
-  };
-  
-
-
-
-
-
-
-
+  //       return scaleObject(result);
+  //     })(),
+  //   },
+  // };
   // Merge nowBitrateChartData into datas
-  Object.assign(datas, nowBitrateChartData, maxBitrateChartData);
-
+  Object.assign(datas, nowBitrateChartData);
   // Check for NOW-BR properties
   if (Object.keys(datas['NOW-BR']).length > 1) {
     dataNamesArray.push('NOW-BR');
@@ -672,62 +622,13 @@ function createExcelFile(filePath) {
   }
   
   // Check for MAX-BR properties
-  if (Object.keys(datas['MAX-BR']).length > 1) {
-    dataNamesArray.push('MAX-BR');
-  } else {
-    // If no properties, remove the empty object
-    delete datas['MAX-BR'];
-  }
-
-console.log("MAX-BR: ",maxBitrateChartData);
+  // if (Object.keys(datas['MAX-BR']).length > 1) {
+  //   dataNamesArray.push('MAX-BR');
+  // } else {
+  //   // If no properties, remove the empty object
+  //   delete datas['MAX-BR'];
+  // }
 console.log("Updated datas object: ", datas);
-
-let bitrateDatas = {};
-const nowBitrateChartData1 = {
-    'NOW-BR': {
-      "chart": "line",
-      ...dataObjects.reduce((acc, item, index) => {
-        acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
-        return acc;
-      }, {}),
-    },
-  };
-const maxBitrateChartData1 = {
-  'MAX-BR': {
-    "chart": "column",
-    ...(() => {
-      const lastIndex = dataObjects.length - 1;
-      
-      // Initialize all values to 0
-      const result = Object.fromEntries(dataObjects.map((_, index) => [index + 1, 0]));
-
-      // Set the value at the last index
-      if (lastIndex >= 0) {
-        const lastValue = dataObjects[lastIndex] && dataObjects[lastIndex]['MAX-BR'] !== undefined ? dataObjects[lastIndex]['MAX-BR'] : null;
-        result[lastIndex + 1] = lastValue;
-      }
-      return result;
-    })(),
-  },
-};
-Object.assign(bitrateDatas,nowBitrateChartData1,maxBitrateChartData1);
-  // Check for NOW-BR properties
-  if (Object.keys(bitrateDatas['NOW-BR']).length > 1) {
-    dataNamesArray.push('NOW-BR');
-  } else {
-    // If no properties, remove the empty object
-    delete bitrateDatas['NOW-BR'];
-  }
-  
-  // Check for MAX-BR properties
-  if (Object.keys(bitrateDatas['MAX-BR']).length > 1) {
-    dataNamesArray.push('MAX-BR');
-  } else {
-    // If no properties, remove the empty object
-    delete bitrateDatas['MAX-BR'];
-  }
-
-
 
   const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
   const ourOpts = {
@@ -771,110 +672,19 @@ Object.assign(bitrateDatas,nowBitrateChartData1,maxBitrateChartData1);
               "PLOST": {
                   "PLOST": 'ff0000',
               },
-              "JT-A": {
-                "JT-A": '808080'
-              },
-              "RTT-A": {
-                "RTT-A": '097969'
-              },
-              "PLOST-F": {
-                "PLOST-F": 'ffffff'
-              },
-              "JT-F": {
-                "JT-F": 'ffffff'
-              },
-              "RTT-SDA-F": {
-                "RTT-SDA-F": 'ffffff'
-              },
-              "RTT-STRD-F": {
-                "RTT-STRD-F": 'ffffff'
-              },
-              "RTT-LTRD-F": {
-                "RTT-LTRD-F": 'ffffff'
-              },
-              "PLOST-M": {
-                "PLOST-M": 'ffffff'
-              },
-              "JT-M": {
-                "JT-M": 'ffffff'
-              },
-              "RTT-M": {
-                "RTT-M": 'ffffff'
-              },
-              "RTT-STRD-M": {
-                "RTT-STRD-M": 'ffffff'
-              },
-              "RTT-LTRD-M": {
-                "RTT-LTRD-M": 'ffffff'
-              },
               "NOW-BR":{
                 "NOW-BR": 'ff0000'
               },
-              "MAX-BR": {
-                "MAX-BR": '000000'
-              }
           },
           series: {
               "PLOST": {
                   fill: 'ff0000',
                   line: 'ff0000',
               },
-              "JT-A": {
-                fill: '808080',
-                line: '808080'
-              },
-              "RTT-A": {
-                fill: '097969',
-                line: '097969'
-              },
-              "PLOST-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "JT-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-SDA-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-STRD-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-LTRD-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "PLOST-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "JT-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-STRD-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-LTRD-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
               "NOW-BR": {
                 fill: 'ff0000',
                 line: 'ff0000'
               },
-              "MAX-BR": {
-                fill: '000000',
-                line: '000000'
-              }
             }
         },
         titles: selectedAndEvt,
@@ -993,22 +803,10 @@ Object.assign(bitrateDatas,nowBitrateChartData1,maxBitrateChartData1);
         data: rttLTRDChartData,
         chartTitle: 'RTT-LTRD Chart',
         lineWidth: 0.2,
-      },
-      {        
-        position: {
-        fromColumn: 1,
-        toColumn: 28,
-        fromRow: 211,
-        toRow: 231,
-      },
-        titles: ['NOW-BR','MAX-BR'],
-        fields: fieldDataset,
-        data: bitrateDatas,
-        chartTitle: 'Bitrate Chart',
-        lineWidth: 0.2,
-      },
+      }
     ],
   };
+
   xlsxChart.generate(ourOpts, function (err, data) {
   const loadingOverlay = document.getElementById("loadingOverlay");
     if (err) {
@@ -1017,8 +815,25 @@ Object.assign(bitrateDatas,nowBitrateChartData1,maxBitrateChartData1);
       loadingOverlay.style.display = "flex";
       fs.writeFileSync(filePath, data);
       loadingOverlay.style.display = "none";
+      executePythonScript(filePath);
       showAlert("ファイルダウンロードを保存しました");
       console.log('Excel file with line chart created successfully at:', filePath);
     }
   });
+
+  // Execute Python script after Excel file generation
+const { exec } = require('child_process');
+function executePythonScript(filePath) {
+  // Execute the Python script
+  const pythonScriptPath = 'python.py'; // Update with the actual name of your Python script
+  exec(`python ${pythonScriptPath} "${filePath}"`, (error, stdout, stderr) => {
+      if (error) {
+          console.error(`Error executing Python script: ${error}`);
+          return;
+      }
+      console.log(`Python script output: ${stdout}`);
+  });
+}
+
+
 }
