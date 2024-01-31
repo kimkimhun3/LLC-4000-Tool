@@ -85,7 +85,10 @@ b7:RTTバラつき閾値オーバー 大
 b8:RTT短期上昇閾値オーバー 大
 b9:RTT長期上昇閾値オーバー 大
 ```
+LANに配信される輻輳データで、イベント発生時にマークする輻輳グラフデータの関連を示す。
+Congestion data delivered to the LAN, showing the association of congestion graph data to be marked when an event occurs.
 
+![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/8131a7eb-539d-4731-aedf-08a3f9f5d218)
 
 
 
