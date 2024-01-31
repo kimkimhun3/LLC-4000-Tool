@@ -4,7 +4,7 @@
   "description": "Congestion Tools",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron . --max-old-space-size=8192",
     "package-win": "electron-packager . LLC-4000 --platform=win32 --icon=./jkj.ico --arch=x64 --out=Final",
     "build-installer": "makensis installer-script.nsi",
     "package-and-build-installer": "npm run package-win && npm run build-installer",
