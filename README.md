@@ -93,7 +93,6 @@ Congestion data delivered to the LAN, showing the association of congestion grap
 ※ 以下のデータは、グラフ上にイベントを表示しない。	
 The following data do not show events on the graph.	
 JT-A、JT-SDA、RTT-A、RTT-SDA	
-![Uploading image.png…]()
 
 
 
