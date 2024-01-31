@@ -90,6 +90,12 @@ Congestion data delivered to the LAN, showing the association of congestion grap
 
 ![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/8131a7eb-539d-4731-aedf-08a3f9f5d218)
 
+※ 以下のデータは、グラフ上にイベントを表示しない。	
+The following data do not show events on the graph.	
+JT-A、JT-SDA、RTT-A、RTT-SDA	
+![Uploading image.png…]()
+
+
 
 
 
