@@ -198,6 +198,13 @@ function handleConvert() {
       currentSum.push(sum);
     }
   }
+
+  console.log("hexValues :",hexValues );
+  console.log("Result array: ",resultArray);
+
+
+
+
   const groupFde8 = [];
   const groupFde9 = [];
   const allPort = [];
@@ -490,7 +497,6 @@ function createExcelFile(filePath) {
   // } else {
   //   delete datas['NOW-BR'];
   // }
-  
   // Check for MAX-BR properties
   // if (Object.keys(datas['MAX-BR']).length > 1) {
   //   dataNamesArray.push('MAX-BR');
