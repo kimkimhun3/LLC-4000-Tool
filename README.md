@@ -60,6 +60,8 @@ npm start
 
 - 0.1
 
+## The version 1.0, the facing bugs steps and start to implement the graph
+
 
 
 
