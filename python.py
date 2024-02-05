@@ -21,6 +21,7 @@ if __name__ == "__main__":
     chartArea.Legend.Font.Size = 9
     for series in chartArea.SeriesCollection():
         if series.Name == "NOW-BR":
+            series.Format.Line.Weight = 1.5  # Set line weight to 1.5 points
             series.Format.Fill.ForeColor.RGB = 255  # Red color
             series.AxisGroup = 2
             series.ChartType = client.constants.xlLine
