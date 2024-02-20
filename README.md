@@ -94,7 +94,9 @@ Congestion data delivered to the LAN, showing the association of congestion grap
 The following data do not show events on the graph.	
 JT-A、JT-SDA、RTT-A、RTT-SDA	
 
-
+## Combination Charts for all the data series
+Jitter, Round-trip time, Packet lost, current Bitrate and maximum Bitrate.
+![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/f7dae127-6fe7-4ea6-8ae9-ae4bc44df7c0)
 
 
 
