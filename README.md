@@ -98,6 +98,9 @@ JT-A、JT-SDA、RTT-A、RTT-SDA
 Jitter, Round-trip time, Packet lost, current Bitrate and maximum Bitrate.
 ![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/f7dae127-6fe7-4ea6-8ae9-ae4bc44df7c0)
 
+## Combination Charts for all the data series including Bitrate consumtion:
+![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/933ff487-575b-45bd-9954-18ca0b324e8a)
+
 
 
 
