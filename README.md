@@ -73,6 +73,7 @@ evt80 to RTT-SDA-M
 evt100 to RTT-STRD-M
 evt200 to RTT-LTRD-M
 
+
 検出した輻輳イベントをbit単位で示す。(16進数)
 b0:パケットロスト閾値オーバー 小
 b1:ジッタ閾値オーバー 小
