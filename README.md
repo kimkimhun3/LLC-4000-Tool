@@ -107,6 +107,19 @@ Jitter, Round-trip time, Packet lost, current Bitrate and maximum Bitrate.
 npm install --save-dev @electron-forge/cli
 npx electron-forge import
 ```
+package.json
+```sh
+ //...
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  //...
+```
+```
+npm run make
+```
 
 
 
