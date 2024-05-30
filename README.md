@@ -102,6 +102,11 @@ Jitter, Round-trip time, Packet lost, current Bitrate and maximum Bitrate.
 ## Combination Charts for all the data series including Bitrate consumption:
 ![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/933ff487-575b-45bd-9954-18ca0b324e8a)
 
+## Application Packaging
+```sh
+npm install --save-dev @electron-forge/cli
+npx electron-forge import
+```
 
 
 
