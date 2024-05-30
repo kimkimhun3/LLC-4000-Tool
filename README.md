@@ -121,5 +121,12 @@ package.json
 npm run make
 ```
 
+# This make command contains two steps:
+- It will first run electron-forge package under the hood, which bundles your app code together with the Electron binary. The packaged code is generated into a folder.
+- It will then use this packaged app folder to create a separate distributable for each configured maker.
+After the script runs, you should see an out folder containing both the distributable and a folder containing the packaged application code.
 
-
+```
+out/
+├── out/make/zip/darwin/x64/my-electron-app-darwin-x64-1.0.0.zip
+```
