@@ -126,7 +126,4 @@ npm run make
 - It will then use this packaged app folder to create a separate distributable for each configured maker.
 After the script runs, you should see an out folder containing both the distributable and a folder containing the packaged application code.
 
-```
-out/
-├── out/make/zip/darwin/x64/my-electron-app-darwin-x64-1.0.0.zip
-```
+
