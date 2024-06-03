@@ -62,29 +62,29 @@ npm start
 - 0.1
 ```sh
 F: Few, M:Many
-evt1 to PLOST-F
-evt2 to JT-F
-evt4 to RTT-SDA-F
-evt8 to RTT-STRD-F
-evt10 to RTT-LTRD-F
-evt20 to PLOST-M
-evt40 to JT-M
-evt80 to RTT-SDA-M
+evt1   to PLOST-F
+evt2   to JT-F
+evt4   to RTT-SDA-F
+evt8   to RTT-STRD-F
+evt10  to RTT-LTRD-F
+evt20  to PLOST-M
+evt40  to JT-M
+evt80  to RTT-SDA-M
 evt100 to RTT-STRD-M
 evt200 to RTT-LTRD-M
 
 
 検出した輻輳イベントをbit単位で示す。(16進数)
-b0:パケットロスト閾値オーバー 小
-b1:ジッタ閾値オーバー 小
-b2:RTTバラつき閾値オーバー 小
-b3:RTT短期上昇閾値オーバー 小
-b4:RTT長期上昇閾値オーバー 小
-b5:パケットロスト閾値オーバー 大
-b6:ジッタ閾値オーバー 大
-b7:RTTバラつき閾値オーバー 大
-b8:RTT短期上昇閾値オーバー 大
-b9:RTT長期上昇閾値オーバー 大
+b0: パケットロスト閾値オーバー 小
+b1: ジッタ閾値オーバー 小
+b2: RTTバラつき閾値オーバー 小
+b3: RTT短期上昇閾値オーバー 小
+b4: RTT長期上昇閾値オーバー 小
+b5: パケットロスト閾値オーバー 大
+b6: ジッタ閾値オーバー 大
+b7: RTTバラつき閾値オーバー 大
+b8: RTT短期上昇閾値オーバー 大
+b9: RTT長期上昇閾値オーバー 大
 ```
 LANに配信される輻輳データで、イベント発生時にマークする輻輳グラフデータの関連を示す。
 Congestion data delivered to the LAN, showing the association of congestion graph data to be marked when an event occurs.
