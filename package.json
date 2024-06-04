@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron . --max-old-space-size=8192",
-    "package-win": "electron-packager . LLC-4000 --platform=win32 --icon=./jkj.ico --arch=x64 --out=Final",
+    "package": "electron-packager . LLC-4000 --platform=win32 --icon=./jkj.ico --arch=x64 --out=Final3",
     "build-installer": "makensis installer-script.nsi",
     "package-and-build-installer": "npm run package-win && npm run build-installer",
     "test": "echo \"Error: no test specified\" && exit 1",

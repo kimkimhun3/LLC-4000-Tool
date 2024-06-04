@@ -511,8 +511,8 @@ console.log("Updated datas object: ", datas);
     charts: [
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 22,
           toRow: 42,
         },
@@ -538,7 +538,7 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
+          fromColumn: 0,
           toColumn: 29,
           fromRow: 1,
           toRow: 21,
@@ -584,8 +584,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 43,
           toRow: 63,
         },
@@ -598,8 +598,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 64,
           toRow: 84,
         },
@@ -612,8 +612,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 85,
           toRow: 105,
         },
@@ -626,8 +626,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 106,
           toRow: 126,
         },
@@ -640,8 +640,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 127,
           toRow: 147,
         },
@@ -654,8 +654,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 148,
           toRow: 168,
         },
@@ -668,8 +668,8 @@ console.log("Updated datas object: ", datas);
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 169,
           toRow: 189,
         },
@@ -682,8 +682,8 @@ console.log("Updated datas object: ", datas);
       },
       {        
         position: {
-        fromColumn: 1,
-        toColumn: 28,
+        fromColumn: 0,
+        toColumn: 27,
         fromRow: 190,
         toRow: 210,
       },
