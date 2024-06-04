@@ -19,16 +19,32 @@ if __name__ == "__main__":
     chartArea2 = wb.Sheets(1).ChartObjects("Диаграмма 1").Chart
     chartArea.HasLegend = True
     # chartArea.Legend.Font.Size = 8
+    # Function to adjust the plot area position for a given chart
     def adjust_plot_area_position(chart):
-        # Get the current left position of the plot area
-        #chart_area = chart.PlotArea
-        # # Adjust the font size of the tick labels
+        # Adjust the font size of the tick labels based on chart name
         vertical_axis = chart.Axes(2)  # Access the vertical axis
-        vertical_axis.TickLabels.Font.Size = 8  # Change the font size to 8 points
+
+        # Check if any series in the chart has negative values
+        has_negative_values = False
+        for series in chart.SeriesCollection():
+            if any(value < 0 for value in series.Values):
+                has_negative_values = True
+                break
+
+        # Adjust the font size of the tick labels based on the presence of negative values
+        if has_negative_values:
+            vertical_axis.TickLabels.Font.Size = 7.2  # Change the font size to 7.1 points if negative values are present
+        else:
+            vertical_axis.TickLabels.Font.Size = 7  # Change the font size to 7 points if all values are positive
         vertical_axis.TickLabels.NumberFormat = "00000000"
-        # vertical_axis.TickLabels.NumberFormat = "0\" 0000\";0\" 0000\";\"0000\""
-        # Get the width of column B
-        # b_column_width = chart.Parent.Parent.Columns("A:A").Width
+
+        # Adjust the font size of the primary Y-axis title based on the minimum scale
+        primary_y_axis = chart.Axes(2, 1)
+        min_y_value = primary_y_axis.MinimumScale
+        if min_y_value < 0:
+            primary_y_axis.AxisTitle.Font.Size = 5  # Set font size to 5 if negative values are present
+        else:
+            primary_y_axis.AxisTitle.Font.Size = 8  # Otherwise, set font size to 8
 
     def adjust_legend(chart):
         chart.HasLegend = True
@@ -82,22 +98,47 @@ if __name__ == "__main__":
 
 
     #All Data
+    # x_axis = chartArea.Axes(1, 1)
+    # x_axis.HasTitle = True
+    # x_axis.AxisTitle.Text = "Number evt (unit)"
+    # x_axis.AxisTitle.Font.Size = 8  
+    # primary_y_axis = chartArea.Axes(2, 1)
+    # primary_y_axis.HasTitle = True
+    # primary_y_axis.AxisTitle.Text = "Time (ms)"
+    # primary_y_axis.AxisTitle.Font.Size = 8  
+    # secondary_y_axis = chartArea.Axes(2, 2)
+    # secondary_y_axis.HasTitle = True
+    # secondary_y_axis.AxisTitle.Text = "Bitrate (kbps)"
+    # secondary_y_axis.AxisTitle.Font.Size =  9
+    # secondary_y_axis.TickLabels.Font.Size = 11
+    # secondary_y_axis.AxisTitle.Left = secondary_y_axis.AxisTitle.Left + 10
+    # secondary_y_axis.TickLabels.NumberFormat = "00000000"
+        
+    # All Data
     x_axis = chartArea.Axes(1, 1)
     x_axis.HasTitle = True
     x_axis.AxisTitle.Text = "Number evt (unit)"
     x_axis.AxisTitle.Font.Size = 8  
+
     primary_y_axis = chartArea.Axes(2, 1)
     primary_y_axis.HasTitle = True
     primary_y_axis.AxisTitle.Text = "Time (ms)"
-    primary_y_axis.AxisTitle.Font.Size = 8  
+
+    # Check if primary Y-axis contains negative values
+    min_y_value = primary_y_axis.MinimumScale
+
+    if min_y_value < 0:
+        primary_y_axis.AxisTitle.Font.Size = 5  # Set font size to 5 if negative values are present
+    else:
+        primary_y_axis.AxisTitle.Font.Size = 8  # Otherwise, set font size to 8
+
     secondary_y_axis = chartArea.Axes(2, 2)
     secondary_y_axis.HasTitle = True
     secondary_y_axis.AxisTitle.Text = "Bitrate (kbps)"
-    secondary_y_axis.AxisTitle.Font.Size =  9
+    secondary_y_axis.AxisTitle.Font.Size = 9
     secondary_y_axis.TickLabels.Font.Size = 11
     secondary_y_axis.AxisTitle.Left = secondary_y_axis.AxisTitle.Left + 10
     secondary_y_axis.TickLabels.NumberFormat = "00000000"
-
 
     #PLOST
     primary_y_axis2 = chartArea2.Axes(2, 1)
@@ -134,4 +175,3 @@ if __name__ == "__main__":
             # adjust_vertical_axis_font(chart)
 
     xl.Quit()
-    #Why use Quit(), still ask to sava again

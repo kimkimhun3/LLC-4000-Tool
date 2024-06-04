@@ -1,5 +1,4 @@
 var inputText = "";
-var simpleB;
 let newArr = [];
 let decodedStringFde9 = [];
 let decodedStringFde8 = []; 
@@ -12,9 +11,6 @@ function hexToAscii(hex) {
   return asciiString;
 }
 
-let selectedDirectory;
-let fileContent = "";
-function submitForm() {}
 
 function openFile() {
   ipcRenderer.send("open-file-dialog");
@@ -202,6 +198,13 @@ function handleConvert() {
       currentSum.push(sum);
     }
   }
+
+  console.log("hexValues :",hexValues );
+  console.log("Result array: ",resultArray);
+
+
+
+
   const groupFde8 = [];
   const groupFde9 = [];
   const allPort = [];
@@ -220,9 +223,6 @@ function handleConvert() {
       groupFde9.push(cleanedItem);
     }
   }
-
-  // console.log("fde8", groupFde8);
-  // console.log("fde9", groupFde9);
   for (const item of target) {
     if (item.includes(hexPort1) || item.includes(hexPort2)) {
       allPort.push(item);
@@ -262,20 +262,13 @@ function handleConvert() {
     for (const pattern of elementsToRemove) {
       element = element.replace(pattern, '');
     }
-  
-
     // Convert sequence numbers to integers
     element = element.replace(/(\d+)\s/g, (match, group1) => `${parseInt(group1, 10)} `);
-  
     return element.replace(/[^a-zA-Z0-9=,:-]/g, '');
   }).filter(element => element !== undefined);
-  // console.log("New Array: ",newArr);
   const decodedAll = allDecode.map(hexToAscii);
-  // Assign decoded strings to global variables
-  //console.log(typeof decodedStringFde8);
   decodedStringFde8 = decodedStringFde8
   .map(line => line.replace(/\x00/g, '').trim()).filter(line => line !== '').join('\n');
-  //console.log(typeof decodedStringFde8);
   window.decodedStringFde8 = decodedStringFde8;
   window.decodedStringFde9 = decodedStringFde9
   .map((line) => line.trim())
@@ -290,52 +283,22 @@ function handleConvert() {
   fileContent3.value = window.decodedAll;
   // fileContent4.value = window.excelData;
 }
+
 function showAlert(message) {
   const alertOverlay = document.getElementById("alertOverlay");
   const alertMessage = document.getElementById("alertMessage");
   const alertCloseBtn = document.getElementById("alertCloseBtn");
-
   alertMessage.innerHTML = message.replace("\n", "<br>");
   alertOverlay.style.display = "flex";
   alertCloseBtn.addEventListener("click", () => {
     alertOverlay.style.display = 'none';
     closeAlert();
   });
-  // Close the alert when the user presses Enter, Space, or Esc
-  document.addEventListener("keydown", handleKeyDown);
 }
 function closeAlert() {
   const alertOverlay = document.getElementById("alertOverlay");
   alertOverlay.style.display = "none";
-  // Remove the event listener to avoid potential memory leaks
-  document.removeEventListener("keydown", handleKeyDown);
 }
-function handleKeyDown(event) {
-  // Check if the pressed key is Enter (key code 13), Space (key code 32), or Esc (key code 27)
-  if (event.keyCode === 13 || event.keyCode === 32 || event.keyCode === 27) {
-    closeAlert();
-  }
-}
-
-// function parseEventData(dataString) {
-//   const eventData = {};
-//   const keyValuePairs = dataString.split(':').pop().split(',');
-//   keyValuePairs.forEach((pair) => {
-//     const [key, value] = pair.split('=');
-//     eventData[key] = parseInt(value, 10);
-//   });
-//   return eventData;
-// }
-// function parseEventData(dataString) {
-//   const eventData = {};
-//   const keyValuePairs = dataString.split(':').pop().split(',');
-//   keyValuePairs.forEach((pair) => {
-//     const [key, value] = pair.split('=');
-//     eventData[key] = parseInt(value, 10);
-//   });
-//   return eventData;
-// }
-
 
 function parseEventData(dataString) {
   const eventData = {};
@@ -353,34 +316,20 @@ function parseEventData(dataString) {
   return eventData;
 }
 
-
-
 function getSelectedColumns() {
   const selectedColumns = [];
-  if (document.getElementById('checkboxJT').checked) selectedColumns.push('JT');
-  if (document.getElementById('checkboxJTA').checked) selectedColumns.push('JT-A');
-  if (document.getElementById('checkboxJTSDA').checked) selectedColumns.push('JT-SDA');
   if (document.getElementById('checkboxRTT').checked) selectedColumns.push('RTT');
   if (document.getElementById('checkboxRTTA').checked) selectedColumns.push('RTT-A');
   if (document.getElementById('checkboxRTTSDA').checked) selectedColumns.push('RTT-SDA');
   if (document.getElementById('checkboxRTTSTRD').checked) selectedColumns.push('RTT-STRD');
   if (document.getElementById('checkboxRTTLTRD').checked) selectedColumns.push('RTT-LTRD');
+  if (document.getElementById('checkboxJT').checked) selectedColumns.push('JT');
+  if (document.getElementById('checkboxJTA').checked) selectedColumns.push('JT-A');
+  if (document.getElementById('checkboxJTSDA').checked) selectedColumns.push('JT-SDA');
   if (document.getElementById('checkboxPLOST').checked) selectedColumns.push('PLOST');
   return selectedColumns;
 }
-function getUncheckedColumns() {
-  const uncheckedColumns = [];
-  if (!document.getElementById('checkboxJT').checked) uncheckedColumns.push('JT');
-  if (!document.getElementById('checkboxJTA').checked) uncheckedColumns.push('JT-A');
-  if (!document.getElementById('checkboxJTSDA').checked) uncheckedColumns.push('JT-SDA');
-  if (!document.getElementById('checkboxRTT').checked) uncheckedColumns.push('RTT');
-  if (!document.getElementById('checkboxRTTA').checked) uncheckedColumns.push('RTT-A');
-  if (!document.getElementById('checkboxRTTSDA').checked) uncheckedColumns.push('RTT-SDA');
-  if (!document.getElementById('checkboxRTTSTRD').checked) uncheckedColumns.push('RTT-STRD');
-  if (!document.getElementById('checkboxRTTLTRD').checked) uncheckedColumns.push('RTT-LTRD');
-  if (!document.getElementById('checkboxPLOST').checked) uncheckedColumns.push('PLOST');
-  return uncheckedColumns;
-}
+
 
 function createExcelFile(filePath) {
   // Assuming newArr is your array of data
@@ -391,27 +340,9 @@ function createExcelFile(filePath) {
     console.error('Data objects are undefined or have length 0.');
     return;
   }
-  // console.log("Data Object: ",dataObjects);
-  //const evtValues = dataObjects.map((data) => data.evt);
-  // const evtValues = dataObjects.map((data) => (data.evt === 0 ? "" : data.evt));
-  // console.log("ONLY evt: ",evtValues);
-
-
-  // Extract all unique property names from all data points
-  //const allProperties = Array.from(new Set(dataObjects.flatMap((item) => Object.keys(item))));
-
-
-  // const chartData = {};
-  // allProperties.forEach((columnName) => {
-  //   chartData[columnName] = dataObjects.map((item) => (item && item[columnName] !== undefined ? item[columnName] : null));
-  // });
-
-
 
   /* Each Graph one by one */
-  const jtChartData = {
-    JT: dataObjects.map((item) => (item && item['JT'] !== undefined ? item['JT'] : null)),
-  }
+
   const jtAChartData = {
     'JT-A': dataObjects.map((item) => (item && item['JT-A'] !== undefined ? item['JT-A'] : null)),
   };
@@ -436,24 +367,25 @@ function createExcelFile(filePath) {
   const plostChartData = {
     PLOST: dataObjects.map((item) => (item && item['PLOST'] !== undefined ? item['PLOST'] : null)),
   }
-  // const evtChartData = {
-  //   evt: dataObjects.map((item) => (item && item['evt'] !== undefined ? item['evt'] : null)),
-  // }
-  // const evtChartData = {
-  //   evt: dataObjects.map((item) => (item && item['evt'] !== undefined ? (item['evt'] === 0 ? " " : item['evt']) : null)),
-  // };
+  const jtChartData = {
+    JT: dataObjects.map((item) => (item && item['JT'] !== undefined ? item['JT'] : null)),
+  }
+  const isAllPLOSTZero = plostChartData.PLOST.every(value => value === 0);
+  console.log("PLOST chart data: ", plostChartData);
 
+
+  //New function
   const filteredEvtData = {
-    "PLOST-F": dataObjects.map((item) => (item && item['evt'] === 1 ? item['evt'] : " ")),
-    "JT-F": dataObjects.map((item) => (item && item['evt'] === 2 ? item['evt'] : " ")),
-    "RTT-SDA-F": dataObjects.map((item) => (item && item['evt'] === 4 ? item['evt'] : " ")),
-    "RTT-STRD-F": dataObjects.map((item) => (item && item['evt'] === 8 ? item['evt'] : " ")),
-    "RTT-LTRD-F": dataObjects.map((item) => (item && item['evt'] === 10 ? item['evt'] : " ")),
-    "PLOST-M": dataObjects.map((item) => (item && item['evt'] === 20 ? item['evt'] : " ")),
-    "JT-M": dataObjects.map((item) => (item && item['evt'] === 40 ? item['evt'] : " ")),
-    "RTT-SDA-M": dataObjects.map((item) => (item && item['evt'] === 80 ? item['evt'] : " ")),
-    "RTT-STRD-M": dataObjects.map((item) => (item && item['evt'] === 100 ? item['evt'] : " ")),
-    "RTT-LTRD-M": dataObjects.map((item) => (item && item['evt'] === 200 ? item['evt'] : " ")),
+    "PLOST-M": dataObjects.map((item) => (item && item['evt'] === 20 ? item['evt'] : 0)),
+    "PLOST-F": dataObjects.map((item) => (item && item['evt'] === 1 ? item['evt'] : 0)),
+    "JT-M": dataObjects.map((item) => (item && item['evt'] === 40 ? item['evt'] : 0)),
+    "JT-F": dataObjects.map((item) => (item && item['evt'] === 2 ? item['evt'] : 0)),
+    "RTT-M": dataObjects.map((item) => (item && item['evt'] === 80 ? item['evt'] : 0)),
+    "RTT-F": dataObjects.map((item) => (item && item['evt'] === 4 ? item['evt'] : 0)),
+    "RTT-STRD-M": dataObjects.map((item) => (item && item['evt'] === 100 ? item['evt'] : 0)),
+    "RTT-STRD-F": dataObjects.map((item) => (item && item['evt'] === 8 ? item['evt'] : 0)),
+    "RTT-LTRD-M": dataObjects.map((item) => (item && item['evt'] === 200 ? item['evt'] : 0)),
+    "RTT-LTRD-F": dataObjects.map((item) => (item && item['evt'] === 10 ? item['evt'] : 0)),
   };
   console.log("FilteredEvt Data: ",filteredEvtData);  
   const nonEmptyArrays = [];
@@ -465,16 +397,42 @@ function createExcelFile(filePath) {
       nonEmptyArrays.push(propertyName);
     }
   });
+  console.log("All Event: ",nonEmptyArrays);
+
   const xlsxChart = new XLSXChart();
   const selectedColumns = getSelectedColumns();
+  // Filter elements based on prefixes
+  const hasColumn = (prefix) => selectedColumns.includes(prefix);
+
+  // Your existing array filtering based on conditions
+  const filteredNonEmptyArrays = nonEmptyArrays.filter((elem) => {
+    const prefix = elem.replace(/-(F|M)$/, ''); // Remove the suffix to match with selectedColumns
+    return hasColumn(prefix) && (elem.endsWith("-F") || elem.endsWith("-M"));
+  });
+
   const newArrayData = {};
   selectedColumns.forEach((columnName) => {
-    newArrayData[columnName] = dataObjects.map((item) =>
+    const arrayValues = dataObjects.map((item) =>
       item && item[columnName] !== undefined ? item[columnName] : null
     );
+    // Check if the array name starts with "JT"
+    if (columnName.startsWith("JT")) {
+      newArrayData[columnName] = arrayValues.map((value) => value / 1000);
+    } else {
+      newArrayData[columnName] = arrayValues;
+    }
   });
-  const selectedAndEvt = selectedColumns.concat(nonEmptyArrays);
-  // Add column data to the data object
+
+  //maybe check here.
+  const selectedAndEvt = selectedColumns.concat(filteredNonEmptyArrays, "NOW-BR");
+  if (isAllPLOSTZero) {
+    const indexToRemove = selectedAndEvt.indexOf("PLOST");
+    if (indexToRemove !== -1) {
+      selectedAndEvt.splice(indexToRemove, 1);
+    }
+  }
+  
+
   var datas = {};
   let maxValue = 0
   var dataNamesArray = [];
@@ -492,17 +450,20 @@ function createExcelFile(filePath) {
       }
     });
     // Check if there are properties other than 'chart'
-    if (Object.keys(datas[title]).length > 1) {
+    const hasNonChartProperties = Object.values(datas[title]).some(val => val !== "chart");
+    if (hasNonChartProperties) {
       dataNamesArray.push(title);
     } else {
-      // If no properties, remove the empty object
-      delete datas[title];
+      // If no properties other than 'chart', remove the object if all values are 0
+      const allValuesAreZero = Object.values(datas[title]).every(val => val === 0);
+      if (!allValuesAreZero) {
+        delete datas[title];
+      }
     }
   });
-
-  nonEmptyArrays.forEach(title => {
+  filteredNonEmptyArrays.forEach(title => {
     datas[title] = {
-      "chart": "line",
+      "chart": "scatter",
     };
     filteredEvtData[title].forEach((value, index) => {
       var dataKey = index + 1;
@@ -519,16 +480,39 @@ function createExcelFile(filePath) {
       delete datas[title];
     }
   });
-  console.log("dataNames: ",dataNamesArray);
-  console.log("Data Data: ",datas);
-  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
 
+
+  const nowBitrateChartData = {
+    'NOW-BR': {
+      "chart": "scatter",
+      ...dataObjects.reduce((acc, item, index) => {
+        acc[index + 1] = item && item['NOW-BR'] !== undefined ? item['NOW-BR'] : null;
+        return acc;
+      }, {}),
+    },
+  };
+  Object.assign(datas, nowBitrateChartData);
+  // if (Object.keys(datas['NOW-BR']).length > 1) {
+  //   dataNamesArray.push('NOW-BR');
+  // } else {
+  //   delete datas['NOW-BR'];
+  // }
+  // Check for MAX-BR properties
+  // if (Object.keys(datas['MAX-BR']).length > 1) {
+  //   dataNamesArray.push('MAX-BR');
+  // } else {
+  //   // If no properties, remove the empty object
+  //   delete datas['MAX-BR'];
+  // }
+console.log("Updated datas object: ", datas);
+
+  const fieldDataset = dataObjects.map((_, i) => i+1) //start from 1
   const ourOpts = {
     charts: [
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 22,
           toRow: 42,
         },
@@ -554,8 +538,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 29,
           fromRow: 1,
           toRow: 21,
         },
@@ -564,41 +548,14 @@ function createExcelFile(filePath) {
               "PLOST": {
                   "PLOST": 'ff0000',
               },
-              "JT-A": {
-                "JT-A": '808080'
+              "NOW-BR":{
+                "NOW-BR": 'ff0000'
               },
-              "RTT-A": {
-                "RTT-A": '097969'
+              "JT": {
+                "JT": '008000'
               },
-              "PLOST-F": {
-                "PLOST-F": 'ffffff'
-              },
-              "JT-F": {
-                "JT-F": 'ffffff'
-              },
-              "RTT-SDA-F": {
-                "RTT-SDA-F": 'ffffff'
-              },
-              "RTT-STRD-F": {
-                "RTT-STRD-F": 'ffffff'
-              },
-              "RTT-LTRD-F": {
-                "RTT-LTRD-F": 'ffffff'
-              },
-              "PLOST-M": {
-                "PLOST-M": 'ffffff'
-              },
-              "JT-M": {
-                "JT-M": 'ffffff'
-              },
-              "RTT-SDA-M": {
-                "RTT-SDA-M": 'ffffff'
-              },
-              "RTT-STRD-M": {
-                "RTT-STRD-M": 'ffffff'
-              },
-              "RTT-LTRD-M": {
-                "RTT-LTRD-M": 'ffffff'
+              "RTT": {
+                "RTT": '6699CC'
               }
           },
           series: {
@@ -606,53 +563,17 @@ function createExcelFile(filePath) {
                   fill: 'ff0000',
                   line: 'ff0000',
               },
-              "JT-A": {
-                fill: '808080',
-                line: '808080'
+              "NOW-BR": {
+                fill: 'ff0000',
+                line: 'ff0000'
               },
-              "RTT-A": {
-                fill: '097969',
-                line: '097969'
+              "JT": {
+                fill: '008000',
+                line: '008000'
               },
-              "PLOST-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "JT-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-SDA-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-STRD-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-LTRD-F": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "PLOST-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "JT-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-SDA-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-STRD-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
-              },
-              "RTT-LTRD-M": {
-                fill: 'ffffff',
-                line: 'ffffff'
+              "RTT": {
+                fill: '6699CC',
+                line: '6699CC'
               }
             }
         },
@@ -663,8 +584,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 43,
           toRow: 63,
         },
@@ -677,8 +598,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 64,
           toRow: 84,
         },
@@ -691,8 +612,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 85,
           toRow: 105,
         },
@@ -705,8 +626,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 106,
           toRow: 126,
         },
@@ -719,8 +640,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 127,
           toRow: 147,
         },
@@ -733,8 +654,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 148,
           toRow: 168,
         },
@@ -747,8 +668,8 @@ function createExcelFile(filePath) {
       },
       {
         position: {
-          fromColumn: 1,
-          toColumn: 28,
+          fromColumn: 0,
+          toColumn: 27,
           fromRow: 169,
           toRow: 189,
         },
@@ -761,8 +682,8 @@ function createExcelFile(filePath) {
       },
       {        
         position: {
-        fromColumn: 1,
-        toColumn: 28,
+        fromColumn: 0,
+        toColumn: 27,
         fromRow: 190,
         toRow: 210,
       },
@@ -772,9 +693,10 @@ function createExcelFile(filePath) {
         data: rttLTRDChartData,
         chartTitle: 'RTT-LTRD Chart',
         lineWidth: 0.2,
-      },
+      }
     ],
   };
+
   xlsxChart.generate(ourOpts, function (err, data) {
   const loadingOverlay = document.getElementById("loadingOverlay");
     if (err) {
@@ -783,8 +705,24 @@ function createExcelFile(filePath) {
       loadingOverlay.style.display = "flex";
       fs.writeFileSync(filePath, data);
       loadingOverlay.style.display = "none";
+      executePythonScript(filePath);
       showAlert("ファイルダウンロードを保存しました");
       console.log('Excel file with line chart created successfully at:', filePath);
     }
   });
+  // Execute Python script after Excel file generation
+  const { exec } = require('child_process');
+  function executePythonScript(filePath) {
+    // Execute the Python script
+    const pythonScriptPath = 'python.py'; // Update with the actual name of your Python script
+    exec(`python ${pythonScriptPath} "${filePath}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing Python script: ${error}`);
+            return;
+        }
+        console.log(`Python script output: ${stdout}`);
+    });
+  }
+
+
 }
