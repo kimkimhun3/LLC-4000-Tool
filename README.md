@@ -54,15 +54,79 @@ cd LLC-4000_Congestion_tool
 npm install
 npm start
 ```
+- **Note point**
 
 
 ## Release History
 
 - 0.1
+```sh
+F: Few, M:Many
+evt1   to PLOST-F
+evt2   to JT-F
+evt4   to RTT-SDA-F
+evt8   to RTT-STRD-F
+evt10  to RTT-LTRD-F
+evt20  to PLOST-M
+evt40  to JT-M
+evt80  to RTT-SDA-M
+evt100 to RTT-STRD-M
+evt200 to RTT-LTRD-M
 
 
+検出した輻輳イベントをbit単位で示す。(16進数)
+b0: パケットロスト閾値オーバー 小
+b1: ジッタ閾値オーバー 小
+b2: RTTバラつき閾値オーバー 小
+b3: RTT短期上昇閾値オーバー 小
+b4: RTT長期上昇閾値オーバー 小
+b5: パケットロスト閾値オーバー 大
+b6: ジッタ閾値オーバー 大
+b7: RTTバラつき閾値オーバー 大
+b8: RTT短期上昇閾値オーバー 大
+b9: RTT長期上昇閾値オーバー 大
+```
+LANに配信される輻輳データで、イベント発生時にマークする輻輳グラフデータの関連を示す。
+Congestion data delivered to the LAN, showing the association of congestion graph data to be marked when an event occurs.
 
+![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/8131a7eb-539d-4731-aedf-08a3f9f5d218)
 
+※ 以下のデータは、グラフ上にイベントを表示しない。
+The following data do not show events on the graph.	
+JT-A、JT-SDA、RTT-A、RTT-SDA	
 
+## Combination Charts for all the data series
+Jitter, Round-trip time, Packet lost, current Bitrate and maximum Bitrate.
+![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/f7dae127-6fe7-4ea6-8ae9-ae4bc44df7c0)
 
+## Combination Charts for all the data series including Bitrate consumption:
+![image](https://github.com/kimkimhun3/LLC-4000-Tool/assets/47348954/933ff487-575b-45bd-9954-18ca0b324e8a)
 
+## Application Packaging
+```sh
+npm install --save-dev @electron-forge/cli
+npx electron-forge import
+```
+package.json
+```sh
+ //...
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  //...
+```
+```
+npm run make
+```
+
+# This make command contains two steps:
+- It will first run electron-forge package under the hood, which bundles your app code together with the Electron binary. The packaged code is generated into a folder.
+- It will then use this packaged app folder to create a separate distributable for each configured maker.
+After the script runs, you should see an out folder containing both the distributable and a folder containing the packaged application code.
+
+```
+out/
+├── out/make/zip/darwin/x64/my-electron-app-darwin-x64-1.0.0.zip
+```
