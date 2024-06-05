@@ -97,7 +97,7 @@ if __name__ == "__main__":
         primary_y_axis.AxisTitle.Font.Size = 8  
 
 
-    #All Data
+    #All Data (IDK Why I skipped this)
     # x_axis = chartArea.Axes(1, 1)
     # x_axis.HasTitle = True
     # x_axis.AxisTitle.Text = "Number evt (unit)"
