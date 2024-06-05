@@ -160,7 +160,7 @@ if __name__ == "__main__":
         set_axis_labels(chartArea, "Number evt (unit)", "Time (μs)")
         
 
-    # Chart Areas 6 to 10 - "Diagram 6" to "Diagram 10" RTT, RTT-A, RTT-SDA, RTT-STRD, RTT-LTRD
+    # Chart Areas 6 to 10 - "Diagram 6" to "Diagram 10" RTT, RTT-A, RTT-SDA, RTT-STRD, RTT-LTRD (Loop to assign the name, because they are not much used)
     for i in range(6, 11):
         chart_name = "Diagram " + str(i)
         chartArea = wb.Sheets(1).ChartObjects(chart_name).Chart
