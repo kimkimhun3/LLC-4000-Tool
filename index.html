@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
-    <title>LLC-4000 輻輳ログ変換ツール Ver: 01.00</title>
+    <title>LLC-4000 輻輳ログ変換ツール Ver: 01.03</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
@@ -31,7 +31,7 @@
         <button id="alertCloseBtn">Close</button>
       </div>
     </div>
-    <div class="title">LLC-4000 輻輳ログ変換ツール Ver: 01.00</div>
+    <div class="title">LLC-4000 輻輳ログ変換ツール Ver: 01.03</div>
     <div class="form-style-2">
       <form onsubmit="submitForm()">
         <label for="fileInput"><span>入力ログファイル:<span class="required"></span></span><button for="fileInput" onclick="openFile()">選択ボタン</button><div id="uploaded-file-path"></div></label>
@@ -42,7 +42,11 @@
         <label for="fileInput"><span>輻輳制御ログファイル出力: <span class="required"></span></span><button type="button" onclick="openSaveDialog()">選択ボタン1</button><div id="created-file1"></div></label>
         <label for="fileInput"><span>輻輳データログファイル出力: <span class="required"></span></span><button type="button" onclick="openSaveDialog2()">選択ボタン2</button><div id="created-file2"></div></label>
         <label for="fileInput"><span>P1 + P2: <span class="required"></span></span><button type="button" onclick="openSaveDialog3()">選択ボタン3</button><div id="created-file3"></div></label>
-        <label for="fileInput"><span>グラフ: <span class="required"></span></span><button type="button" onclick="openSaveDialog4()">選択ボタン4</button><div id="created-file4"></div>        </label>
+        <label for="fileInput"><span>グラフ: <span class="required"></span></span><button type="button" onclick="openSaveDialog4()">選択ボタン4</button><div id="created-file4"></div></label>
+        <label for="fileInput"><span><button type="button" id="downloadBtn" onclick="handleConvert()">MAX Length</button></span><h4><div id="maxLengthDisplay">Max Length: </div></h4></label>
+        <br>
+        <label for="fileInput"><span>Start: </span><input type="number" id="fde9InputStart" placeholder="start" min="1" value="1"  class="input-field"></label>
+        <label for="fileInput"><span>End: </span><input type="number" id="fde9InputEnd" placeholder="end" class="input-field"></label>
         <div class="checkbox-group">
           <div class="checkbox-item">
             <input type="checkbox" id="checkboxJT">
@@ -82,7 +86,9 @@
             <label for="checkboxPLOST">PLOST</label>
           </div>
         </div>
+
         <button type="button" id="downloadBtn" onclick="saveFile()">ダウンロード</button>
+
       </form>
     </div>
     <script>
@@ -99,5 +105,6 @@
 
     </script>
   </body>
+
 
 </html>
