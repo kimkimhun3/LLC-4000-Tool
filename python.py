@@ -178,7 +178,7 @@ if __name__ == "__main__":
             adjust_legend(chart)
             adjust_plot_area_position(chart)
             # adjust_vertical_axis_font(chart)
-            # The above two function is conflict each other
+            # The above two function is conflict each others
     wb.SaveAs(save_path, FileFormat=51)
     # Close workbook and quit Excel
     wb.Close(SaveChanges=1)
