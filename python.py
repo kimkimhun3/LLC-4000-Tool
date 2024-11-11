@@ -1,6 +1,7 @@
 import sys
 from win32com.client import DispatchEx
 from win32com import client
+import os
 
 if __name__ == "__main__":
     # Check if the correct number of command-line arguments is provided
@@ -9,6 +10,9 @@ if __name__ == "__main__":
         sys.exit(1)
     # Retrieve the filePath from command-line arguments
     filePath = sys.argv[1]
+    savePath = filePath.replace("/", "\\")
+    base, ext = os.path.splitext(savePath)
+    save_path = f"{base}_Modified{ext}"
 
     # Initialize Excel and open workbook
     xl = DispatchEx("Excel.Application")
@@ -97,7 +101,7 @@ if __name__ == "__main__":
         primary_y_axis.AxisTitle.Font.Size = 8  
 
 
-    #All Data (IDK Why I skipped this)
+    #All Data
     # x_axis = chartArea.Axes(1, 1)
     # x_axis.HasTitle = True
     # x_axis.AxisTitle.Text = "Number evt (unit)"
@@ -139,6 +143,7 @@ if __name__ == "__main__":
     secondary_y_axis.TickLabels.Font.Size = 11
     secondary_y_axis.AxisTitle.Left = secondary_y_axis.AxisTitle.Left + 10
     secondary_y_axis.TickLabels.NumberFormat = "00000000"
+    secondary_y_axis.MinimumScale = 0
 
     #PLOST
     primary_y_axis2 = chartArea2.Axes(2, 1)
@@ -160,7 +165,7 @@ if __name__ == "__main__":
         set_axis_labels(chartArea, "Number evt (unit)", "Time (μs)")
         
 
-    # Chart Areas 6 to 10 - "Diagram 6" to "Diagram 10" RTT, RTT-A, RTT-SDA, RTT-STRD, RTT-LTRD (Loop to assign the name, because they are not much used)
+    # Chart Areas 6 to 10 - "Diagram 6" to "Diagram 10" RTT, RTT-A, RTT-SDA, RTT-STRD, RTT-LTRD
     for i in range(6, 11):
         chart_name = "Diagram " + str(i)
         chartArea = wb.Sheets(1).ChartObjects(chart_name).Chart
@@ -174,5 +179,7 @@ if __name__ == "__main__":
             adjust_plot_area_position(chart)
             # adjust_vertical_axis_font(chart)
             # The above two function is conflict each other
-
+    wb.SaveAs(save_path, FileFormat=51)
+    # Close workbook and quit Excel
+    wb.Close(SaveChanges=1)
     xl.Quit()
