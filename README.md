@@ -17,6 +17,10 @@ Windows PC上で動作するツールとして作成する。(青網掛：ボタ
 
 ![image](https://github.com/kimkimhun3/LLC-4000_Congestion_tool/assets/47348954/84704cd4-86b0-4807-9042-0f8949ea8594)
 
+### New UI Update
+![image](https://github.com/user-attachments/assets/d6a6903f-39bb-4b2c-a0d5-95f08058c5d0)
+
+
 ## 入力ログファイル仕様![image](https://github.com/kimkimhun3/LLC-4000_Congestion_tool/assets/47348954/cb96e640-0d48-4932-b93f-46ed0d46721c)
 Input log file specifications
 
