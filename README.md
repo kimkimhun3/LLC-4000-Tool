@@ -1,5 +1,5 @@
 # LLC-4000 Congestion Tool
-# 輻輳ログ変換ツール仕様 ver: 0.1
+# 輻輳ログ変換ツール仕様 ver: 01.03
 
 ## Made with
 [![Electron Logo](https://electronjs.org/images/electron-logo.svg)](https://electronjs.org)
